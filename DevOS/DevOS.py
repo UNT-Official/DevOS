@@ -19,6 +19,12 @@ class DevOS:
 
         if command == "help":
             self.kernel.help()
+            
+        elif command == "clear":
+            self.kernel.clear()
+            
+        elif command.startswith("open-image"):
+            self.kernel.openImage(command)
 
         elif command.startswith("calc"):
             self.kernel.send_message(self.kernel.calculate(command))
