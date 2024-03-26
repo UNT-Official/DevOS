@@ -1,0 +1,12 @@
+{
+  "os-path": "",
+	"user": "",
+  "pc-name": "",
+  "password": "",
+
+  "postgres": {
+  	"database": "DevOS",
+    "host": "...",
+    "port": 5432
+  }
+}

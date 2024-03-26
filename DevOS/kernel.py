@@ -1,4 +1,7 @@
 import json
+import os
+from tkinter import Tk, Label
+from PIL import Image, ImageTk
 
 class Kernel:
     user = ""
@@ -9,16 +12,29 @@ class Kernel:
 
     errorPass = False
 
-    commands = ["help", "calc", "root", "unroot"]
-    description_commands = ["See all commands", "calculator", "login to admin user", "exit of the admin user"]
+    commands = [
+        "help", 
+        "clear", 
+        "calc", 
+        "open-image", 
+        "root", 
+        "unroot"
+    ]
+    description_commands = [
+        "See all commands",
+        "Clear console", 
+        "Calculator", 
+        "Open image in new window(Only for windows!)", 
+        "Login to admin user", 
+        "Exit of the admin user"
+    ]
 
     def __init__(self):
         pass
 
     def help(self):
-        print(len(self.commands))
-        #for i in len(self.commands):
-        #    print("{} - {}".format(self.commands[i], self.description_commands[i]))
+        for i in range(len(self.commands)):
+            print("{} - {}".format(self.commands[i], self.description_commands[i]))
 
     def getConfig(self):
         with open('config.json', 'r') as f:
@@ -27,6 +43,10 @@ class Kernel:
         self.pc_name = data["pc-name"]
         self.password = data["password"]
         self.changePermissions()
+        
+    def clear(self):
+        for time in range(60):
+            print(" ")
 
     def changePermissions(self):
         if self.isLoginedToRoot == True:
@@ -70,3 +90,18 @@ class Kernel:
     def calculate(self, command):
         args = command.split("=")
         return eval(args[1])
+    
+    def openImage(self, command):
+        args = command.split(" = ")
+        if(len(args) <= 1):
+            return
+        window = Tk()
+        if(os.path.exists(args[1]) == False):
+            print("Image not exists.")
+            return
+        image = Image.open(args[1])
+        photo = ImageTk.PhotoImage(image)
+        label = Label(window, image=photo)
+        label.pack()
+        window.mainloop()
+        
