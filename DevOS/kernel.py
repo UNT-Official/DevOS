@@ -1,7 +1,5 @@
 import json
 import os
-from tkinter import Tk, Label
-from PIL import Image, ImageTk
 
 class Kernel:
     user = ""
@@ -90,18 +88,3 @@ class Kernel:
     def calculate(self, command):
         args = command.split("=")
         return eval(args[1])
-    
-    def openImage(self, command):
-        args = command.split(" = ")
-        if(len(args) <= 1):
-            return
-        window = Tk()
-        if(os.path.exists(args[1]) == False):
-            print("Image not exists.")
-            return
-        image = Image.open(args[1])
-        photo = ImageTk.PhotoImage(image)
-        label = Label(window, image=photo)
-        label.pack()
-        window.mainloop()
-        
