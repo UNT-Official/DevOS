@@ -1,6 +1,7 @@
 import time
 import os
 import shutil
+import json
 
 os_path = ""
 username = ""
@@ -63,17 +64,26 @@ def install():
     global username
     global password
     
+    os_path = os_path + "/DevOS"
+    
     print("Create os directory...")
-    if(os.path.exists(os_path)):
-        print("Directory exists")
-    else:
-        os.mkdir(os_path)
-    time.sleep(1)
+    time.sleep(0.1)
     print("Copy files to os directory...")
     installer_path = "./"
-    shutil.copytree(installer_path, os_path + "/DevOS")
-    shutil.rmtree(os_path + "/DevOS/.git")
+    shutil.copytree(installer_path, os_path)
+    os.rename(os_path + "/base-config.json", os_path + "/config.json")
+    with open(os_path + "/config.json") as f:
+        data = json.load(f)
+        data["os-path"] = os_path
+        data["user"] = username
+        data["password"] = password
+    with open(os_path + "/config.json", "w") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    if os.path.exists(os_path + "/installer.py") == True:
+        os.remove(os_path + "/installer.py")
     print("Install complete.")
+    input("Press Enter to close installer")
+        
 
 def startInstall():
     print("Load installer...")
